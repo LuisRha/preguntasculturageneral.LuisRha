@@ -13,7 +13,7 @@
     <p>Puntos restantes: <span id="PuntosRestantes">10</span></p>
     <p>Puntaje acumulado: <span id="PuntajeAcumulado">0</span></p>
     <input type="text" id="adivinarPalabra" placeholder="Adivina la palabra completa">
-    <button id="adivinarBtn" onclick="adivinarPalabra()">Adivinar</button>
+    <button id="adivinarBtn" onclick="adivinarPalabra()">Jugar</button>
     <button id="consumirBtn" onclick="consumirPuntos()">Consumir Puntos</button>
 
     <button onclick="reiniciarJuego()">Siguiente Pregunta</button>
@@ -129,7 +129,7 @@
                 const puntosGanados = 20;
                 PuntajeAcumulado += puntosGanados;
                 PuntosRestantes += puntosGanados;
-                alert(`¡Ganaste! Ganaste ${puntosGanados} puntos. La palabra secreta era: ${palabraSecreta}`);
+                alert(`¡Ganaste! Ganaste ${puntosGanados} Iste es lo maximo : ${palabraSecreta}`);
                 guardarEnHistorial("Ganaste", puntosGanados);
                 iniciarJuego();
             } else {
