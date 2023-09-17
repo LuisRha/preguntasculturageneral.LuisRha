@@ -16,7 +16,7 @@
     <button id="adivinarBtn" onclick="adivinarPalabra()">Adivinar</button>
     <button id="consumirBtn" onclick="consumirPuntos()">Consumir Puntos</button>
 
-    <button onclick="reiniciarJuego()">Reiniciar Juego</button>
+    <button onclick="reiniciarJuego()">Siguiente Pregunta</button>
 
     <div id="historial">
         <h2>Historial del Juego</h2>
@@ -184,7 +184,7 @@
             });
         }
 
-        function SiguientePregunta () {
+        function reiniciarJuego() {
             historialJuego = [];
             iniciarJuego();
         }
