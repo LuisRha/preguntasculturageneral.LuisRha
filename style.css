@@ -4,6 +4,26 @@ body {
     margin: 20px; /* Puedes ajustar el valor de este margen según tus preferencias */
     border: 1px solid #ccc; /* Opcional: un borde alrededor del contenido */
     padding: 20px; /* Opcional: espacio interno alrededor del contenido */
+    font-size: 30px;
+
+    
 
 }
 
+#adivinarPalabra {
+    width: 200px;
+    height: 20px;
+    font-size: 16px;
+    background-color: rgb(194, 218, 218);
+    
+}
+
+#preguntaRelacionada {
+    width: 200px;
+    height: 30px;
+    font-size: 36px;
+    background-color: rgb(109, 177, 177);
+    color: rgb(255, 238, 0);
+    font-size: 40px;
+
+}
