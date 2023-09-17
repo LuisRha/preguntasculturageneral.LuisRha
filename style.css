@@ -1,0 +1,9 @@
+body {
+    background-color: rgb(72, 168, 168);
+    text-align: center;
+    margin: 20px; /* Puedes ajustar el valor de este margen según tus preferencias */
+    border: 1px solid #ccc; /* Opcional: un borde alrededor del contenido */
+    padding: 20px; /* Opcional: espacio interno alrededor del contenido */
+
+}
+

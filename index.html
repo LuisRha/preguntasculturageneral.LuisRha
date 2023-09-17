@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Preguntas de  cultura general (juego)</title>
+    <link rel="stylesheet" type="text/css" href="style.css">
+</head>
+<body>
+    <h1>Juego con preguntas de Cultura General</h1>
+    <p> <span id="palabraSecreta"></span></p>
+    <p>Pregunta: <span id="preguntaRelacionada"></span></p>
+    <p>Puntos restantes: <span id="PuntosRestantes">10</span></p>
+    <p>Puntaje acumulado: <span id="PuntajeAcumulado">0</span></p>
+    <input type="text" id="adivinarPalabra" placeholder="Adivina la palabra completa">
+    <button id="adivinarBtn" onclick="adivinarPalabra()">Adivinar</button>
+    <button id="consumirBtn" onclick="consumirPuntos()">Consumir Puntos</button>
+
+    <button onclick="reiniciarJuego()">Reiniciar Juego</button>
+
+    <div id="historial">
+        <h2>Historial del Juego</h2>
+        <ul id="historialLista"></ul>
+    </div>
+
+    <script>
+        // Lista de palabras y preguntas relacionadas
+        const palabrasYPreguntas = [
+            { palabra: "Computadora", pregunta: "¿Bot?" },
+            { palabra: "Dinosaurio", pregunta: "¿Qué criaturas prehistóricas eran enormes y aterradoras?" },
+            { palabra: "Mariposa", pregunta: "¿Qué insecto tiene alas coloridas y vuela durante el día?" },
+            { palabra: "Elefante", pregunta: "¿Qué animal es el más grande que camina sobre la Tierra?" },
+            { palabra: "Avioneta", pregunta: "¿Qué tipo de aeronave es más pequeña que un avión?" },
+            { palabra: "Jirafa", pregunta: "¿Manchas?" },
+            { palabra: "Montaña", pregunta: "¿Qué formación geográfica es muy alta y generalmente rocosa?" },
+            // Agrega más palabras y preguntas aquí
+            { palabra: "Biblioteca", pregunta: "¿💻?" },
+            { palabra: "Catarata", pregunta: "¿Agua?" },
+            { palabra: "Guitarra", pregunta: "¿Tocar con dedos?" },
+            { palabra: "Serpiente", pregunta: "¿Qué reptil es conocido por su cuerpo largo y sin patas?" },
+            { palabra: "Astronomía", pregunta: "¿Qué ciencia estudia los astros y el espacio exterior?" },
+            { palabra: "Tigre", pregunta: "¿Qué gran felino es conocido por sus rayas?" },
+            { palabra: "Arcoíris", pregunta: "¿Qué fenómeno meteorológico produce un espectro de colores en el cielo?" },
+            { palabra: "Buceo", pregunta: "¿Qué actividad implica sumergirse bajo el agua con equipo especial?" },
+            { palabra: "Marte", pregunta: "¿Qué planeta del sistema solar es conocido como el Planeta Rojo?" },
+            { palabra: "Saxofón", pregunta: "¿Qué instrumento musical de viento fue inventado por Adolphe Sax?" },
+            { palabra: "Cataratas del Niágara", pregunta: "¿Qué famosas cascadas están en la frontera entre Canadá y Estados Unidos?" },
+            { palabra: "Volcán", pregunta: "¿Qué tipo de montaña puede entrar en erupción arrojando lava y ceniza?" },
+            { palabra: "Ajedrez", pregunta: "¿Qué juego de estrategia se juega en un tablero cuadriculado?" },
+            { palabra: "Abeja", pregunta: "¿Qué insecto es conocido por producir miel?" },
+            { palabra: "Amazonas", pregunta: "¿Qué río es el más largo del mundo?" },
+            { palabra: "Piano", pregunta: "¿Qué instrumento musical tiene teclas que se tocan con los dedos?" },
+            { palabra: "Cámara", pregunta: "¿Qué dispositivo se usa para tomar fotografías?" },
+            { palabra: "Elección", pregunta: "¿Qué proceso implica tomar una decisión entre diferentes opciones?" },
+            { palabra: "Reloj", pregunta: "¿Qué dispositivo se utiliza para medir el tiempo?" },
+            { palabra: "Otoño", pregunta: "¿En qué estación del año caen las hojas de los árboles?" },
+            { palabra: "Orquídea", pregunta: "¿Qué tipo de flor es conocida por su belleza y diversidad?" },
+            { palabra: "Escalada", pregunta: "¿Qué actividad deportiva implica subir montañas o paredes rocosas?" },
+            { palabra: "Murciélago", pregunta: "¿Qué mamífero vuela de noche y se asocia con vampiros en la cultura popular?" },
+            { palabra: "Playa", pregunta: "¿Dónde puedes encontrar arena, mar y sol?" },
+            { palabra: "Hamburguesa", pregunta: "¿Qué comida rápida es una carne entre dos panes?" },
+            { palabra: "Robot", pregunta: "¿Qué máquina puede realizar tareas automáticamente?" },
+            { palabra: "Desierto", pregunta: "¿Qué tipo de paisaje es árido y seco, con poca vegetación?" },
+            { palabra: "Maratón", pregunta: "¿Qué tipo de carrera es una prueba de resistencia de 42.195 kilómetros?" },
+            { palabra: "Helado", pregunta: "¿Qué postre frío viene en una variedad de sabores?" },
+            { palabra: "Luna", pregunta: "¿Qué cuerpo celeste orbita alrededor de la Tierra?" },
+            { palabra: "Palacio", pregunta: "¿Qué tipo de edificio es la residencia de un rey o una reina?" },
+            { palabra: "Circo", pregunta: "¿Dónde puedes ver actuaciones de acróbatas, payasos y animales entrenados?" },
+            { palabra: "Sismo", pregunta: "¿Qué fenómeno natural es causado por el movimiento de la Tierra?" },
+            { palabra: "Pirámide", pregunta: "¿Qué estructura arquitectónica tiene forma triangular y se encuentra en Egipto?" },
+            { palabra: "Gran Muralla China", pregunta: "¿Qué famosa estructura defensiva se extiende por miles de kilómetros en China?" },
+            { palabra: "Fotografía", pregunta: "¿Qué arte implica capturar imágenes con una cámara?" },
+            { palabra: "Violín", pregunta: "¿Qué instrumento musical tiene cuerdas que se tocan con un arco?" },
+            { palabra: "Sahara", pregunta: "¿Qué desierto es el más grande del mundo?" },
+            { palabra: "Cine", pregunta: "¿Dónde se proyectan películas para el público?" },
+            { palabra: "Cohete", pregunta: "¿Qué tipo de vehículo espacial se utiliza para viajar fuera de la atmósfera terrestre?" },
+            { palabra: "Bailar", pregunta: "¿Qué actividad artística implica mover el cuerpo al ritmo de la música?" },
+            { palabra: "Zoológico", pregunta: "¿Dónde puedes ver una variedad de animales de diferentes partes del mundo?" },
+            { palabra: "Invierno", pregunta: "¿En qué estación del año suele nevar y hacer frío?" },
+            { palabra: "Castillo", pregunta: "¿Qué tipo de fortaleza histórica solía ser la residencia de reyes y nobles?" }  
+        ];
+
+        let palabraSecreta = "";
+        let preguntaRelacionada = "";
+        let PuntosRestantes = 10;
+        let PuntajeAcumulado = 0;
+        let letrasAdivinadas = [];
+        let historialJuego = [];
+
+        function seleccionarPalabraYPreguntaAleatoria() {
+            const indiceAleatorio = Math.floor(Math.random() * palabrasYPreguntas.length);
+            palabraSecreta = palabrasYPreguntas[indiceAleatorio].palabra.toUpperCase();
+            preguntaRelacionada = palabrasYPreguntas[indiceAleatorio].pregunta;
+        }
+
+        function iniciarJuego() {
+            seleccionarPalabraYPreguntaAleatoria();
+            letrasAdivinadas = [];
+            actualizarInterfaz();
+            // Habilitar los botones de "Adivinar" y "Consumir Puntos" al iniciar el juego
+            document.getElementById("adivinarBtn").disabled = false;
+            document.getElementById("consumirBtn").disabled = false;
+        }
+
+        function actualizarInterfaz() {
+            document.getElementById("palabraSecreta").textContent = mostrarPalabraSecreta();
+            document.getElementById("preguntaRelacionada").textContent = preguntaRelacionada;
+            document.getElementById("PuntosRestantes").textContent = PuntosRestantes;
+            document.getElementById("PuntajeAcumulado").textContent = PuntajeAcumulado;
+            actualizarHistorial();
+        }
+
+        function mostrarPalabraSecreta() {
+            let palabraMostrada = "";
+            for (const letra of palabraSecreta) {
+                if (letrasAdivinadas.includes(letra) || letra === " ") {
+                    palabraMostrada += letra + " ";
+                } else {
+                    palabraMostrada += "_ ";
+                }
+            }
+            return palabraMostrada;
+        }
+
+        function adivinarPalabra() {
+            const palabraIngresada = document.getElementById("adivinarPalabra").value.toUpperCase();
+            document.getElementById("adivinarPalabra").value = "";
+
+            if (palabraIngresada === palabraSecreta) {
+                const puntosGanados = 20;
+                PuntajeAcumulado += puntosGanados;
+                PuntosRestantes += puntosGanados;
+                alert(`¡Ganaste! Ganaste ${puntosGanados} puntos. La palabra secreta era: ${palabraSecreta}`);
+                guardarEnHistorial("Ganaste", puntosGanados);
+                iniciarJuego();
+            } else {
+                PuntosRestantes -= 10;
+                actualizarInterfaz();
+
+                if (PuntosRestantes <= 0) {
+                    alert("Perdiste. La palabra secreta era: " + palabraSecreta);
+                    guardarEnHistorial("Perdiste", 0);
+                    // Bloquear los botones de "Adivinar" y "Consumir Puntos" cuando los puntos restantes lleguen a cero
+                    document.getElementById("adivinarBtn").disabled = true;
+                    document.getElementById("consumirBtn").disabled = true;
+                }
+            }
+        }
+
+        function consumirPuntos() {
+            const puntosConsumidos = 10;
+            if (PuntajeAcumulado >= puntosConsumidos) {
+                PuntajeAcumulado -= puntosConsumidos;
+                PuntosRestantes += puntosConsumidos;
+                alert(`Has consumido ${puntosConsumidos} puntos. ¡Aquí va una pista!`);
+                guardarEnHistorial("Consumiste Pista", puntosConsumidos);
+            } else {
+                alert("No tienes suficientes puntos para consumir.");
+            }
+            actualizarInterfaz();
+        }
+
+        function guardarEnHistorial(resultado, puntos) {
+            const fechaActual = new Date();
+            const fechaFormateada = `${fechaActual.getDate()}/${fechaActual.getMonth() + 1}/${fechaActual.getFullYear()}`;
+            const horaFormateada = `${fechaActual.getHours()}:${fechaActual.getMinutes()}:${fechaActual.getSeconds()}`;
+            const registroHistorial = {
+                resultado,
+                puntos,
+                fecha: `${fechaFormateada} ${horaFormateada}`
+            };
+            historialJuego.push(registroHistorial);
+            actualizarHistorial();
+        }
+
+        function actualizarHistorial() {
+            const historialLista = document.getElementById("historialLista");
+            historialLista.innerHTML = ""; // Borra el historial actual
+
+            historialJuego.forEach((registro, index) => {
+                const listItem = document.createElement("li");
+                listItem.textContent = `Intento ${index + 1}: ${registro.resultado} (${registro.puntos} puntos) - ${registro.fecha}`;
+                historialLista.appendChild(listItem);
+            });
+        }
+
+        function reiniciarJuego() {
+            historialJuego = [];
+            iniciarJuego();
+        }
+
+        iniciarJuego();
+    </script>
+</body>
+</html>
